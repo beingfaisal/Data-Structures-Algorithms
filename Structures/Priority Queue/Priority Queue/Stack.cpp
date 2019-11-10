@@ -15,7 +15,7 @@ using namespace std;
 		count = 1;
 	}
 	//the copy constructor of stack class
-	cStack::cStack(const cStack& src)
+	cStack::cStack(const cStack& src) :count(0),top(NULL)
 	{
 		this->top = src.top;
 		if (src.top)

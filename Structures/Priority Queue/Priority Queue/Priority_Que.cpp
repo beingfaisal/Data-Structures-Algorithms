@@ -75,6 +75,6 @@ using namespace std;
 		{
 			ptr = ptr->next;
 			delete top;
-			top = ptr;                  . 
+			top = ptr;               
 		}
 	}

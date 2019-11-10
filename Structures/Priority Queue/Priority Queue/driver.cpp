@@ -3,9 +3,9 @@
 using namespace std;
 int main()
 {
-	/*------------------------------------------------------------------------------------------------------
-		In this Code block we are going to create some nodes and we are going to set their data and priority
-	 -------------------------------------------------------------------------------------------------------*/
+	/*--------------------------------------------------------------------------------------------------------------------------------
+					In this Code block we are going to create some nodes and we are going to set their data and priority
+	 -----------------------------------------------------------------------------------------------------------------------------------*/
 	cNode* n1 = new cNode();
 	n1->setData(10);
 	n1->setPriority(4);
@@ -18,15 +18,15 @@ int main()
 	cNode* n4 = new cNode;
 	n4->setData(234);
 	n4->setPriority(12);
-	/*------------------------------------------------------------------------------------------------
-	In this Code block we are going to create Queue and check whether its empty or not
----------------------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------------------------
+							In this Code block we are going to create Queue and check whether its empty or not
+      -----------------------------------------------------------------------------------------------------------------------------------*/
 	cPriorityQue q1;
 	cout << "Using isEmpty function to check whether Queue is empty or not " << endl;
 	cout << q1.isEmpty() << endl << "As we can see output is 1 so Queue is empty " << endl;
-	/*-------------------------------------------------------------------------------------------------------------------
-		In this Code block we are going to ADD and REMOVE some nodes in Queue according to their priority and print them
-	  -------------------------------------------------------------------------------------------------------------------*/
+	/*-----------------------------------------------------------------------------------------------------------------------------------
+		       In this Code block we are going to ADD and REMOVE some nodes in Queue according to their priority and print them
+	  -----------------------------------------------------------------------------------------------------------------------------------*/
 	q1.add(n1).add(n2).add(n3).add(n4);
 	cout << "Inserting nodes in class \nThe values are :" << endl;
 	q1.print();

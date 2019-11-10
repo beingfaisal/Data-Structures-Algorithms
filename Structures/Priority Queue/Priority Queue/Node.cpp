@@ -40,5 +40,5 @@ using namespace std;
 	//the funtion that is used to output data
 	void cNode::print() const
 	{
-		cout << data <<"	"<< endl;
+		cout <<"The Data is :	"<< data <<"	And the priority is :	"<<priority<< endl;
 	}
