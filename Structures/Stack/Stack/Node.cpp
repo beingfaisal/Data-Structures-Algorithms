@@ -17,7 +17,7 @@ using namespace std;
 		next = NULL;
 	}
 	//Constructors for File Handling that takes input from file
-	cNode::cNode(ifstream& inFile)
+	cNode::cNode(ifstream& inFile):data(0),next(NULL)
 	{
 		inFile.read((char*)this, sizeof(this->data));
 	}

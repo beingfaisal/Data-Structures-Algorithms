@@ -71,7 +71,9 @@ using namespace std;
 		{
 			cStack temp(obj);
 			top = temp.top;
+			count = temp.count;
 			temp.top = NULL;
+			temp.count = 0;
 			return *this;
 		}
 	}
@@ -107,8 +109,8 @@ using namespace std;
 		ptr->next = top;
 		top = ptr;
 		ptr = NULL;
-		return *this;
 		count++;
+		return *this;
 	}
 	//this function is used remove a node from stcak
 	cNode* cStack::pop()
@@ -116,8 +118,8 @@ using namespace std;
 		cNode* ptr = top;
 		top = top->next;
 		ptr->next = NULL;
-		return ptr;
 		count--;
+		return ptr;
 	}
 	//this function is used to print the values of nodes on console
 	void cStack::print() const
@@ -175,7 +177,6 @@ using namespace std;
 				temp.top = this->top;
 			}
 			inFile.read((char*)&count, sizeof(count));
-			cout << "count = " << count << endl;
 			if (count > 0)
 			{
 				cNode* temp;
