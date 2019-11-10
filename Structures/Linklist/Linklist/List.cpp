@@ -1,28 +1,28 @@
-#include "List.h"
 #pragma once
 #include<iostream>
 #include<fstream>
 #include"Node.h"
+#include "List.h"
 using namespace std;
-
+	//this is the null constructor
 	list::list() :head(NULL), count(0) {}
-
-	list::list(cnode*& ptr) : head(ptr), count(1)
+	//this is the parametrized constructor that takes a node as an argument.
+	list::list(cNode*& ptr) : head(ptr), count(1)
 	{
 		head->next = NULL;
 		ptr = NULL;
 	}
-
+	//this is the Copy Constructor of list.
 	list::list(const list& src) :head(src.head), count(src.count)
 	{
 		if (count > 0)
 		{
-			cnode* dptr, * sptr;
-			dptr = head = new cnode(*src.head);
+			cNode* dptr, * sptr;
+			dptr = head = new cNode(*src.head);
 			sptr = src.head->next;
 			while (sptr)
 			{
-				dptr->next = new cnode(*sptr);
+				dptr->next = new cNode(*sptr);
 				sptr = sptr->next;
 				dptr = dptr->next;
 			}
@@ -30,17 +30,91 @@ using namespace std;
 			dptr->next = NULL;
 		}
 	}
-
-	void list::deleteNodes(cnode* ptr)
+	//Constructors for FILE HANDLING 'INPUT DATA FROM FILE'
+	list::list(ifstream& inFile) :head(NULL), count(0)
 	{
-		if (ptr)
+		inFile.read((char*)&count, sizeof(count));
+		if (count > 0)
 		{
-			deleteNodes(ptr->next);
-			delete ptr;
+			cNode* ptr;
+			ptr = head = new cNode(inFile);
+			for (int i = 1; i < count; ++i)
+			{
+				ptr->next = new cNode(inFile);
+				ptr = ptr->next;
+			}
+			ptr->next = NULL;
 		}
 	}
+	//this is the overloaded function of addition that concatinates two lists.
+	list& list::operator+(const list& src)
+	{
+		if (src.count == 0)
+		{
+			return *this;
+		}
+		list copy = src;
+		if (!head)
+		{
+			head = copy.head;
+		}
+		else
+		{
+			cNode* ptr;
+			ptr = head;
+			for (int i = 1; i < count; i++)
+			{
+				ptr = ptr->next;
+			}
+			ptr->next = copy.head;
+			count += copy.count;
+		}
+		copy.head = NULL;
+		return *this;
 
-	list& list::insert(cnode*& ptr)
+	}
+	//this is the overloaded function of Assignment used to copy two lists after initialization
+	list& list::operator =(const list& src)
+	{
+		if (this == &src)
+		{
+			return *this;
+		}
+		if (true)
+		{
+			list temp;
+			temp.head = this->head;
+		}
+		if (true)
+		{
+			list temp = src;
+			this->head = temp.head;
+			this->count = temp.count;
+			temp.head = NULL;
+			temp.count = 0;
+		}
+		return *this;
+	}
+	//this is the overloaded funtion of square brackets that is used highlight the Indexed Nature of Lists.
+	cNode& list::operator[] (int index)
+	{
+		if (index <= 0)
+		{
+			return *head;
+		}
+		if (index >= count)
+		{
+			index = count;
+		}
+		cNode* rptr = head;
+		for (int i = 0; i < index; i++)
+		{
+			rptr = rptr->next;
+		}
+		return *rptr;
+	}
+	//this function of insert adds node at start of list
+	list& list::insert(cNode*& ptr)
 	{
 		ptr->next = head;
 		head = ptr;
@@ -48,8 +122,8 @@ using namespace std;
 		++count;
 		return *this;
 	}
-
-	list& list::inserAt(int index, cnode*& ptr)
+	//this function of insertAt adds node at certain index of list
+	list& list::inserAt(int index, cNode*& ptr)
 	{
 		if (index <= 0)
 		{
@@ -60,8 +134,8 @@ using namespace std;
 		{
 			index = count;
 		}
-		cnode* rptr = head;
-		for (int i = 1; i < index - 1; ++i)
+		cNode* rptr = head;
+		for (int i = 1; i < index; ++i)
 		{
 			rptr = rptr->next;
 		}
@@ -71,17 +145,17 @@ using namespace std;
 		++count;
 		return *this;
 	}
-
-	cnode* list::remove()
+	//this function of remove removes a node from list
+	cNode* list::remove()
 	{
-		cnode* temp = head;
+		cNode* temp = head;
 		head = head->next;
 		temp->next = NULL;
 		--count;
 		return temp;
 	}
-
-	cnode* list::removeAt(int index)
+	//this function of removeAt removes node from certain index
+	cNode* list::removeAt(int index)
 	{
 		if (index <= 0)
 		{
@@ -89,14 +163,14 @@ using namespace std;
 		}
 		if (index >= count)
 		{
-			index = count ;
+			index = count-1 ;
 		}
-		cnode* rptr = head;
-		for (int i = 1; i < index - 1; ++i)
+		cNode* rptr = head;
+		for (int i = 1; i < index; ++i)
 		{
 			rptr = rptr->next;
 		}
-		cnode* ptr;
+		cNode* ptr;
 		ptr = rptr->next;
 		rptr->next = ptr->next;
 		ptr->next = NULL;
@@ -104,15 +178,15 @@ using namespace std;
 		return ptr;
 
 	}
-
+	//this function of Reverse changes the order of list.
 	list& list::reverse()
 	{
 		if (count < 2)
 		{
 			return *this; //When only one node is present in the list 
 		}
-		cnode* rptr=head;
-		cnode** ARR = new cnode * [count];
+		cNode* rptr=head;
+		cNode** ARR = new cNode * [count];
 		
 		for (int i = 0; i < count; ++i) 
 		{
@@ -129,89 +203,32 @@ using namespace std;
 		delete[] ARR;
 		return *this;
 	}
-
-	list& list::operator+(const list& robj)
-	{
-		if (robj.count == 0)
-		{
-			return *this;
-		}//when second list is empty
-		list rCopy = robj;
-		if (!head) head = rCopy.head;
-		else 
-		{
-			cnode* ptr = head;
-			for (int i = 0; i < count; ++i) 
-			{
-				ptr = ptr->next; 
-			}
-			ptr->next = rCopy.head;
-			count += rCopy.count;
-		}
-		rCopy.head = NULL;
-		return *this;
-	}
-
-
-	list& list::operator =(const list& src)
-	{
-		if (this == &src) 
-		{
-			return *this;
-		}
-		if (true) 
-		{
-			list temp; 
-			temp.head = this->head;
-		}
-		if (true)
-		{
-			list temp =src;
-			this->head = temp.head; 
-			temp.head = NULL; 
-		}
-		return *this;
-	}
-
+	//this function of Swap exchanges the position of these two nodes.
 	list& list::swapOfNodesAt(int index1, int index2)
 	{
-		if (index1 < 0)
-		{
-			index1 = 0;
-		}
-		if (index2 < 0)
-		{
-			index2 = 0;
-		}
-		if (index1 >= count) 
-		{
-			index1 = count - 1;
-		}
-		if (index2 >= count) 
-		{
-			index2 = count - 1;
-		}
-		if (index1 == index2)
-		{
-			return *this;
-		}
+		if (index1 < 0) index1 = 0;
+		if (index2 < 0)	index2 = 0;
+		if (index1 >= count) index1 = count - 1;
+		if (index2 >= count) index2 = count - 1;
+		if (index1 == index2) return *this;
 		if (index1 < index2)
 		{
-			cnode* ptr1 = removeAt(index1);
-			inserAt((index2-1 ), ptr1);
-			cnode *ptr2 = removeAt(index2);
-			inserAt((index1-1), ptr2);
+			cNode* ptr1 = removeAt(index1);
+			inserAt((index2 - 1), ptr1);
+			cNode* ptr2 = removeAt(index2);
+			inserAt((index1), ptr2);
 		}
 		else
 		{
-			cnode* ptr3 = (removeAt(index2));
-			inserAt((index1 - 1), ptr3);
-			cnode* ptr4 = (removeAt(index1));
-			inserAt((index2 ), ptr4);
+			cNode* ptr1 = (removeAt(index2));
+			inserAt((index1 - 1), ptr1);
+			cNode* ptr2 = (removeAt(index1));
+			inserAt((index2), ptr2);
 		}
 		return *this;
 	}
-
+	
+	//this is the print function that prints the value of nodes.
 	void list::print() const
 	{
 		if (!head)
@@ -220,7 +237,7 @@ using namespace std;
 		}
 		else
 		{
-			cnode* ptr = head;
+			cNode* ptr = head;
 			for(int i=0;i<count;i++)
 			{
 				ptr->print();
@@ -229,80 +246,66 @@ using namespace std;
 		}
 
 	}
-
-
-
-
-	//Constructors for FILE HANDLING 'INPUT DATA FROM FILE'
-	list::list(ifstream& inFile) :head(NULL), count(0) {
-		inFile.read((char*)&count, sizeof(count));
-		if (count > 0) {
-			cnode* ptr;
-			ptr = head = new cnode(inFile);
-			for (int i = 1; i < count; ++i) {
-				ptr->next = new cnode(inFile);
-				ptr = ptr->next;
-			}
-			ptr->next = NULL;
-		}
-	}
-
-	//Constructors for FILE HANDLING 'OUTPUT DATA TO FILE'
-	list::list(ofstream& outFile) {
-		outFile.write((char*)&count, sizeof(count));
-		if (count > 0) {
-			cnode* ptr = head;
-			ptr = new cnode(outFile);
-			for (int i = 1; i < count; i++) {
-				ptr->next = new cnode(outFile);
-				ptr = ptr->next;
-			}
-		}
-	}
-
 	//Function for writing LIST data to file
-	void list::writeListToFile(ofstream& oFile) {
-		if (!(oFile.is_open())) {
-			cout << "File is not opened for writing !" << endl;
+	void list::writeListToFile(ofstream& outFile) 
+	{
+		if (!(outFile.is_open())) 
+		{
+			cerr << "File did not open in writeListToFile Function ";
+			exit(1);
 		}
-		else {
-			oFile.write((char*)&count, sizeof(count));
+		else 
+		{
+			outFile.write((char*)&count, sizeof(count));
 
-			if (count > 0) {
-				cnode* rptr = head;
-				for (int i = 0; i < count; ++i) {
-					rptr->writeNodetoFile(oFile);
+			if (count > 0) 
+			{
+				cNode* rptr = head;
+				for (int i = 0; i < count; ++i) 
+				{
+					rptr->writeNodetoFile(outFile);
 					rptr = rptr->next;
 				}
 			}
 		}
 	}
-
 	//Function for reading LIST data from file
-	void list::readListFromFile(ifstream& inFile) {
-		if (true) { list temp; temp.head = this->head; }
-
-		if (!(inFile.is_open())) {
-			cout << "File is not opened for writing !" << endl;
+	void list::readListFromFile(ifstream& inFile) 
+	{
+		if (true) 
+		{ list temp; 
+		temp.head = this->head; 
 		}
-		else {
+		if (!(inFile.is_open())) 
+		{
+			cerr << "File is not opened for reading !";
+			exit(1);
+		}
+		else 
+		{
 			inFile.read((char*)&count, sizeof(count));
-			cout << "The count read is " << count << endl;
-			if (count > 0) {
-				cnode* rptr = head = new cnode(inFile);
-				for (int i = 1; i < count; ++i) {
-					rptr->next = new cnode(inFile);
+			if (count > 0) 
+			{
+				cNode* rptr = head = new cNode(inFile);
+				for (int i = 1; i < count; ++i) 
+				{
+					rptr->next = new cNode(inFile);
 					rptr = rptr->next;
 				}
 				rptr->next = NULL;
 			}
 		}
 	}
-
-
-
-
-
+	//this is the recursive function that is used to delete nodes from list.
+	void list::deleteNodes(cNode* ptr)
+	{
+		if (ptr)
+		{
+			deleteNodes(ptr->next);
+			delete ptr;
+		}
+	}
+	//this is destructor that is used to free the dynamically allocated memory to system
 	list::~list()
 	{
 		deleteNodes(head);

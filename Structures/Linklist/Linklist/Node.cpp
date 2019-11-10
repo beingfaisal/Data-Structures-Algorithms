@@ -1,53 +1,49 @@
-#pragma once
 #include<iostream>
 #include<fstream>
 #include "Node.h"
-using namespace std;
+#pragma once
 
-	cnode::cnode()
+#include<iostream>
+using namespace std;
+	//the null constructor
+	cNode::cNode()
 	{
 		data = 0;
 		next = NULL;
 	}
-
-	cnode::cnode(int d) : data(d)
+	//the parametrized construtor that takes an int as argument
+	cNode::cNode(int d) : data(d)
 	{
 		next = NULL;
 	}
-
-	int cnode::getData() const
+	//Constructors for File Handling that takes input from file
+	cNode::cNode(ifstream& inFile) : data(0),next(NULL)
+	{
+		inFile.read((char*)this, sizeof(this->data));
+	}
+	//the function that returns the value of that node
+	int cNode::getData() const
 	{
 		return data;
 	}
-
-	void cnode::setData(int d)
+	//the function that sets data in node
+	void cNode::setData(int d)
 	{
 		this->data = d;
 	}
-
-	void cnode::print() const
+	//the funtion that is used to output data
+	void cNode::print() const
 	{
 		cout << data <<"	"<< endl;
 	}
 
-
-
-	//Constructors for File Handling
-		cnode::cnode(ifstream & inFile) 
-		{
-			inFile.read((char*)this, sizeof(this)); 
-		}
-	    cnode::cnode(ofstream & oFile) 
-	    {
-		oFile.write((char*)this, sizeof(this)); 
-	    }
-
-	//Functions for File Handling
-	void  cnode::writeNodetoFile(ofstream & outData) 
+	//Function to write data of node in file
+	void  cNode::writeNodetoFile(ofstream& outData)
 	{
-		outData.write((char*)this, sizeof(this)); 
+		outData.write((char*)this, sizeof(this->data));
 	}
-	void  cnode::readNodefromFile(ifstream & inData) 
+	//Function to read data from file
+	void  cNode::readNodefromFile(ifstream& inData)
 	{
-		inData.read((char*)this, sizeof(this)); 
+		inData.read((char*)this, sizeof(this->data));
 	}
