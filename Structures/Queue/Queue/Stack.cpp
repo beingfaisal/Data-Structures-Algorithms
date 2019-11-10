@@ -36,24 +36,6 @@ using namespace std;
 
 		}
 	}
-	//cStack constructor to input nodes from file 
-	cStack::cStack(ifstream& inFile) : top(NULL), count(0) 
-	{
-		int size = 0;
-		inFile.read((char*)this, sizeof(*this));
-		if (size > 0) 
-		{
-			cNode* rptr;
-			rptr = top = new cNode(inFile);
-			count = size;
-			for (int i = 0; i < count; ++i) 
-			{
-				rptr->next = new cNode(inFile);
-				rptr = rptr->next;
-			}
-			rptr->next = NULL;
-		}
-	}
 	//the overloaded operator of =
 	cStack& cStack::operator =(const cStack& obj)
 	{
