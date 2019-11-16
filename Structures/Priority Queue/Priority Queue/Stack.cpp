@@ -89,8 +89,8 @@ using namespace std;
 		ptr->next = top;
 		top = ptr;
 		ptr = NULL;
-		return *this;
 		count++;
+		return *this;
 	}
 	//this function is used remove a node from stcak
 	cNode* cStack::pop()
@@ -98,8 +98,8 @@ using namespace std;
 		cNode* ptr = top;
 		top = top->next;
 		ptr->next = NULL;
-		return ptr;
 		count--;
+		return ptr;
 	}
 	//this function is used to print the values of nodes on console
 	void cStack::print() const
