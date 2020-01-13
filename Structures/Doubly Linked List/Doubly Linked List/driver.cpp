@@ -17,12 +17,8 @@ int main()
 	cout << "After Fast Insertions" << endl;
 	l1.print();
 	
-	l1.insertAt(9, n8);
-	cout << "After Directed Insertion" << endl;
-	l1.print();
-	
-	l1.swap(2, 6);
-	cout << "After Swapping of Two Nodes" << endl;
+	l1.insertAt(10, n8);
+	cout << "after directed insertion" << endl;
 	l1.print();
 	
 	l1.removeLeft();
@@ -33,6 +29,9 @@ int main()
 	cout << "After Directed Removal" << endl;
 	l1.print();
 
+	l1.swap(9, 0);
+	cout << "After Swapping of Two Nodes" << endl;
+	l1.print();
 	
 
 }

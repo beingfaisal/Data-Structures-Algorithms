@@ -166,12 +166,11 @@ void cDoublyLinkList::swap(int index1, int index2)
 		rptr->right = sptr->right;
 		if (sptr->right) (sptr->right)->left = rptr;
 		sptr->right = bptr;
-	
 	}
 	else
 	{
 		rptr->right = sptr->right;
-		if (sptr->right)  (rptr->right)->left = rptr;
+		if (sptr->right)  (sptr->right)->left = rptr;
 		sptr->right = NULL;
 	}
 	
@@ -180,10 +179,7 @@ void cDoublyLinkList::swap(int index1, int index2)
 		(rptr->left)->right = sptr;
 		bptr = rptr->left;
 		rptr->left = sptr->left;
-		if (sptr->left)
-		{
-			(sptr->left)->right = rptr;
-		}
+		if (sptr->left) (sptr->left)->right = rptr;
 		sptr->left = bptr;
 	} 
 	else
@@ -195,8 +191,9 @@ void cDoublyLinkList::swap(int index1, int index2)
 	
 	
 	if (index1 <= 0)	leftHead = sptr;
+	else if (index1 >= count - 1) rightHead = sptr;
 	if (index2 >= count - 1)	rightHead = rptr;
-
+	else if (index2 <= 0) leftHead = rptr;
 }
 
 cDoublyLinkList::~cDoublyLinkList()
